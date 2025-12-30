@@ -15,11 +15,15 @@ public class WebConfig {
 
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity){
-        httpSecurity.authorizeHttpRequests(req->
-                req.requestMatchers("/security/register", "/security/aboutUs").permitAll()
-                        .anyRequest().authenticated()).formLogin(Customizer.withDefaults()).httpBasic(Customizer.withDefaults());
+        httpSecurity
+                .csrf(csrf -> csrf.disable()) // Add this to allow POST requests like /register
+                .authorizeHttpRequests(req ->
+                        req.requestMatchers("/security/register", "/security/aboutUs").permitAll()
+                                .anyRequest().authenticated()
+                ).formLogin(Customizer.withDefaults()).httpBasic(Customizer.withDefaults());
 
       return httpSecurity.build();
     }
