@@ -1,6 +1,7 @@
 package com.example.SpringSecurityWithDBP04.controller;
 
 import com.example.SpringSecurityWithDBP04.entity.UserEntity;
+import com.example.SpringSecurityWithDBP04.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRepo userRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
