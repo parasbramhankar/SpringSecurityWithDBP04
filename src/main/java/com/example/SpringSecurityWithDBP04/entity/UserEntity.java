@@ -13,7 +13,6 @@ import lombok.Setter;
 @AllArgsConstructor
 
 public class UserEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -25,5 +24,4 @@ public class UserEntity {
     private String password;
 
     private String role;
-
 }
