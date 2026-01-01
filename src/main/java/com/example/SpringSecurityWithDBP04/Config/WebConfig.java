@@ -4,6 +4,7 @@ import com.example.SpringSecurityWithDBP04.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -22,18 +23,23 @@ public class WebConfig {
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity){
+
+
         httpSecurity
                 .csrf(csrf -> csrf.disable()) // Add this to allow POST requests like /register
                 .authorizeHttpRequests(req ->
-                        req.requestMatchers("/security/register", "/security/aboutUs").permitAll()
+                        req.requestMatchers(HttpMethod.POST,"/security/register").permitAll()
                                 .anyRequest().authenticated()
-                ).formLogin(Customizer.withDefaults()).httpBasic(Customizer.withDefaults());
+                ).formLogin(Customizer.withDefaults());
 
       return httpSecurity.build();
     }
 
+
+    /*
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity httpSecurity) throws Exception{
         AuthenticationManagerBuilder builder=httpSecurity.getSharedObject(AuthenticationManagerBuilder.class);
@@ -42,6 +48,7 @@ public class WebConfig {
 
         return builder.build();
     }
+     */
 
     @Bean
     public PasswordEncoder passwordEncoder(){
