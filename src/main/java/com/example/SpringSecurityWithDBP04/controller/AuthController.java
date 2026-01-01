@@ -31,7 +31,7 @@ public class AuthController {
             throw new RuntimeException("Invalid Username: allowed role only: ADMIN, USER");
         }
 
-        user.setRole(role);
+        user.setRole("ROLE_"+role);
 
         userRepository.save(user);
 
