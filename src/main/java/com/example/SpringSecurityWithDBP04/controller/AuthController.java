@@ -4,10 +4,7 @@ import com.example.SpringSecurityWithDBP04.entity.UserEntity;
 import com.example.SpringSecurityWithDBP04.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/security")
@@ -23,7 +20,18 @@ public class AuthController {
     public String register(@RequestBody UserEntity user) {
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole("USER");
+
+        if(user.getRole()==null || user.getRole().isBlank()){
+            throw  new RuntimeException("user role required");
+        }
+
+        String role=user.getRole().toUpperCase();
+
+        if(!role.equals("USER") && !role.equals("ADMIN")){
+            throw new RuntimeException("Invalid Username: allowed role only: ADMIN, USER");
+        }
+
+        user.setRole(role);
 
         userRepository.save(user);
 
