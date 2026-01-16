@@ -23,7 +23,7 @@ public class WebConfig {
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
-
+/*
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity){
 
@@ -33,13 +33,26 @@ public class WebConfig {
                 .authorizeHttpRequests(req ->
                         req.requestMatchers(HttpMethod.POST,"/security/register").permitAll()
                                 .anyRequest().authenticated()
-                ).formLogin(Customizer.withDefaults());
+                ).formLogin(Customizer.withDefaults()).httpBasic(Customizer.withDefaults());
 
       return httpSecurity.build();
     }
+*/
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity
+                .csrf(csrf -> csrf.disable()) // Keep this disabled for Postman
+                .authorizeHttpRequests(req -> req
+                        .requestMatchers("/security/register").permitAll() // Explicitly permit
+                        .anyRequest().authenticated()
+                )
+                // Comment out formLogin() while testing with Postman to avoid HTML redirects
+                // .formLogin(Customizer.withDefaults())
+                .httpBasic(Customizer.withDefaults()); // Use Basic Auth for Postman
 
+        return httpSecurity.build();
+    }
 
-    /*
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity httpSecurity) throws Exception{
         AuthenticationManagerBuilder builder=httpSecurity.getSharedObject(AuthenticationManagerBuilder.class);
@@ -48,7 +61,6 @@ public class WebConfig {
 
         return builder.build();
     }
-     */
 
     @Bean
     public PasswordEncoder passwordEncoder(){
