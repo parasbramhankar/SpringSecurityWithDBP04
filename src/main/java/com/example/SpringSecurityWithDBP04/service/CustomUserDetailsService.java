@@ -21,10 +21,17 @@ public class CustomUserDetailsService implements UserDetailsService {
         UserEntity user=userRepo.findByUsername(username)
                 .orElseThrow(()->new UsernameNotFoundException(" User not found"));
 
+        /*
         return User.builder()
                 .username(user.getUsername())
                 .password(user.getPassword())
                 .roles(user.getRole())
+                .build();
+        */
+        return User.builder()
+                .username(user.getUsername())
+                .password(user.getPassword())
+                .authorities(user.getRole())
                 .build();
     }
 }
